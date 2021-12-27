@@ -20,7 +20,7 @@ describe('/users', () => {
                 },
             ]);
 
-            const { status, body } = await request(app).get('/users');
+            const { status, body } = await request(app).get('/users').set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 200,
@@ -43,7 +43,9 @@ describe('/users', () => {
                 .spyOn(usersRepo, 'getUserByUsername')
                 .mockReturnValue({ id: '__ID__', username: '__USERNAME__' });
 
-            const { status, body } = await request(app).get('/users?username=__USERNAME__');
+            const { status, body } = await request(app)
+                .get('/users?username=__USERNAME__')
+                .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 200,
@@ -55,7 +57,9 @@ describe('/users', () => {
         it('should return a 404 status error if the username is not found', async () => {
             const getUserByUsernameMock = jest.spyOn(usersRepo, 'getUserByUsername').mockReturnValue(undefined);
 
-            const { status, body } = await request(app).get('/users?username=__USERNAME__');
+            const { status, body } = await request(app)
+                .get('/users?username=__USERNAME__')
+                .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 404,
@@ -71,7 +75,7 @@ describe('/users', () => {
                 .spyOn(usersRepo, 'getUserById')
                 .mockReturnValue({ id: '__ID__', username: '__USERNAME__' });
 
-            const { status, body } = await request(app).get('/users/__ID__');
+            const { status, body } = await request(app).get('/users/__ID__').set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 200,
@@ -83,7 +87,7 @@ describe('/users', () => {
         it('should return a 404 status code if the user is not found', async () => {
             const getUserByIdMock = jest.spyOn(usersRepo, 'getUserById').mockReturnValue(undefined);
 
-            const { status, body } = await request(app).get('/users/__ID__');
+            const { status, body } = await request(app).get('/users/__ID__').set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 404,
@@ -94,12 +98,27 @@ describe('/users', () => {
     });
 
     describe('POST /users', () => {
+        it('should return a 400 error if the body is ill-formatted', async () => {
+            const { status, body } = await request(app)
+                .post('/users')
+                .send({ name: '__USERNAME__' })
+                .set('Authorization', 'Bearer __TOKEN__');
+
+            expect({ status, body }).toEqual({
+                status: 400,
+                body: { message: 'validation error' },
+            });
+        });
+
         it('should create a new user', async () => {
             const createUserMock = jest
                 .spyOn(usersRepo, 'createUser')
                 .mockReturnValue({ id: '__ID__', username: '__USERNAME__' });
 
-            const { status, body } = await request(app).post('/users').send({ username: '__USERNAME__' });
+            const { status, body } = await request(app)
+                .post('/users')
+                .send({ username: '__USERNAME__' })
+                .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 200,
@@ -110,12 +129,27 @@ describe('/users', () => {
     });
 
     describe('PUT /users/:id', () => {
+        it('should return a 400 error if the body is ill-formatted', async () => {
+            const { status, body } = await request(app)
+                .put('/users/__ID__')
+                .send({ name: '__USERNAME__' })
+                .set('Authorization', 'Bearer __TOKEN__');
+
+            expect({ status, body }).toEqual({
+                status: 400,
+                body: { message: 'validation error' },
+            });
+        });
+
         it('should update an existing user', async () => {
             const updateUserMock = jest
                 .spyOn(usersRepo, 'updateUser')
                 .mockReturnValue({ id: '__ID__', username: '__USERNAME__' });
 
-            const { status, body } = await request(app).put('/users/__ID__').send({ username: '__USERNAME__' });
+            const { status, body } = await request(app)
+                .put('/users/__ID__')
+                .send({ username: '__USERNAME__' })
+                .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 200,
@@ -127,7 +161,10 @@ describe('/users', () => {
         it('should return a 404 error if the user is not found', async () => {
             const updateUserMock = jest.spyOn(usersRepo, 'updateUser').mockReturnValue(undefined);
 
-            const { status, body } = await request(app).put('/users/__ID__').send({ username: '__USERNAME__' });
+            const { status, body } = await request(app)
+                .put('/users/__ID__')
+                .send({ username: '__USERNAME__' })
+                .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 404,
@@ -141,7 +178,10 @@ describe('/users', () => {
         it('should delete an existing user', async () => {
             const deleteUserMock = jest.spyOn(usersRepo, 'deleteUser').mockReturnValue(true);
 
-            const { status, body } = await request(app).delete('/users/__ID__').send();
+            const { status, body } = await request(app)
+                .delete('/users/__ID__')
+                .send()
+                .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 204,
@@ -153,7 +193,10 @@ describe('/users', () => {
         it('should return a 404 error if the user is not found', async () => {
             const deleteUserMock = jest.spyOn(usersRepo, 'deleteUser').mockReturnValue(false);
 
-            const { status, body } = await request(app).delete('/users/__ID__').send();
+            const { status, body } = await request(app)
+                .delete('/users/__ID__')
+                .send()
+                .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 404,
