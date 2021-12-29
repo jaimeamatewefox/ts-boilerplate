@@ -13,10 +13,12 @@ describe('/users', () => {
                 {
                     id: '1',
                     username: 'JaimeAmate',
+                    email: 'jaime@jaime.com',
                 },
                 {
                     id: '2',
                     username: 'RosaBerned',
+                    email: 'rosa@rosa.com',
                 },
             ]);
 
@@ -28,10 +30,12 @@ describe('/users', () => {
                     {
                         id: '1',
                         username: 'JaimeAmate',
+                        email: 'jaime@jaime.com',
                     },
                     {
                         id: '2',
                         username: 'RosaBerned',
+                        email: 'rosa@rosa.com',
                     },
                 ],
             });
@@ -41,7 +45,7 @@ describe('/users', () => {
         it('should return a user by username', async () => {
             const getUserByUsernameMock = jest
                 .spyOn(usersRepo, 'getUserByUsername')
-                .mockReturnValue({ id: '__ID__', username: '__USERNAME__' });
+                .mockReturnValue({ id: '__ID__', username: '__USERNAME__', email: 'email@email.com' });
 
             const { status, body } = await request(app)
                 .get('/users?username=__USERNAME__')
@@ -49,7 +53,7 @@ describe('/users', () => {
 
             expect({ status, body }).toEqual({
                 status: 200,
-                body: { id: '__ID__', username: '__USERNAME__' },
+                body: { id: '__ID__', username: '__USERNAME__', email: 'email@email.com' },
             });
             expect(getUserByUsernameMock.mock.calls).toEqual([['__USERNAME__']]);
         });
@@ -73,13 +77,13 @@ describe('/users', () => {
         it('should return the user', async () => {
             const getUserByIdMock = jest
                 .spyOn(usersRepo, 'getUserById')
-                .mockReturnValue({ id: '__ID__', username: '__USERNAME__' });
+                .mockReturnValue({ id: '__ID__', username: '__USERNAME__', email: 'email@email.com' });
 
             const { status, body } = await request(app).get('/users/__ID__').set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 200,
-                body: { id: '__ID__', username: '__USERNAME__' },
+                body: { id: '__ID__', username: '__USERNAME__', email: 'email@email.com' },
             });
             expect(getUserByIdMock.mock.calls).toEqual([['__ID__']]);
         });
@@ -113,7 +117,7 @@ describe('/users', () => {
         it('should create a new user', async () => {
             const createUserMock = jest
                 .spyOn(usersRepo, 'createUser')
-                .mockReturnValue({ id: '__ID__', username: '__USERNAME__' });
+                .mockReturnValue({ id: '__ID__', username: '__USERNAME__', email: 'email@email.com' });
 
             const { status, body } = await request(app)
                 .post('/users')
@@ -122,7 +126,7 @@ describe('/users', () => {
 
             expect({ status, body }).toEqual({
                 status: 200,
-                body: { id: '__ID__', username: '__USERNAME__' },
+                body: { id: '__ID__', username: '__USERNAME__', email: 'email@email.com' },
             });
             expect(createUserMock.mock.calls).toEqual([[{ username: '__USERNAME__' }]]);
         });
@@ -144,7 +148,7 @@ describe('/users', () => {
         it('should update an existing user', async () => {
             const updateUserMock = jest
                 .spyOn(usersRepo, 'updateUser')
-                .mockReturnValue({ id: '__ID__', username: '__USERNAME__' });
+                .mockReturnValue({ id: '__ID__', username: '__USERNAME__', email: 'email@email.com' });
 
             const { status, body } = await request(app)
                 .put('/users/__ID__')
@@ -153,7 +157,7 @@ describe('/users', () => {
 
             expect({ status, body }).toEqual({
                 status: 200,
-                body: { id: '__ID__', username: '__USERNAME__' },
+                body: { id: '__ID__', username: '__USERNAME__', email: 'email@email.com' },
             });
             expect(updateUserMock.mock.calls).toEqual([['__ID__', { id: '__ID__', username: '__USERNAME__' }]]);
         });

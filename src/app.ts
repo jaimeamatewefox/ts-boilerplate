@@ -1,13 +1,38 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import * as usersRepo from './usersRepo';
+import * as Joi from 'joi';
 
 // Create Express server
 const app = express();
 
+//Middlewares
+function isAuth(req: Request, res: Response, next: NextFunction) {
+    if (req.headers.authorization === 'Bearer __TOKEN__') {
+        next();
+    } else {
+        res.status(403).send('sorry you need authentication code');
+    }
+}
+
+async function validateSchema(req: Request, res: Response, next: NextFunction) {
+    const schema = Joi.object({
+        username: Joi.string().min(3).max(25).required(),
+    });
+    try {
+        await schema.validateAsync(req.body);
+    } catch (err) {
+        res.status(400).send({ message: 'validation error' });
+    }
+    next();
+}
+
 // Express configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(isAuth);
 
+
+//endpoints
 app.get('/users', (req, res) => {
     const username = req.query.username as string;
 
@@ -36,9 +61,8 @@ app.get('/users/:id', (req, res) => {
     return res.send(user);
 });
 
-app.post('/users', (req, res) => {
+app.post('/users', validateSchema, (req, res) => {
     const user = {
-        id: req.body.id,
         username: req.body.username,
     };
 
@@ -47,10 +71,11 @@ app.post('/users', (req, res) => {
     return res.send(newUser);
 });
 
-app.put('/users/:id', (req, res) => {
+app.put('/users/:id', validateSchema, (req, res) => {
     const newUser = {
         id: req.params.id,
         username: req.body.username,
+        email: req.body.email,
     };
 
     const user = usersRepo.updateUser(req.params.id, newUser);

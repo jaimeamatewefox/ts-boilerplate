@@ -19,6 +19,7 @@ function createUser(user: { username: string }): IUser {
     const newUser = {
         id: uuidv4(),
         username: user.username,
+        email: user.username
     };
 
     users.push(newUser);
