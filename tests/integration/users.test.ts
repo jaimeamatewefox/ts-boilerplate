@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../src/app';
-import * as usersRepo from '../../src/usersRepo';
+import * as usersRepo from '../../src/user/usersRepo';
 
 describe('/users', () => {
     afterEach(() => {
@@ -121,14 +121,14 @@ describe('/users', () => {
 
             const { status, body } = await request(app)
                 .post('/users')
-                .send({ username: '__USERNAME__' })
+                .send({ username: '__USERNAME__', email: 'email@email.com' })
                 .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 200,
                 body: { id: '__ID__', username: '__USERNAME__', email: 'email@email.com' },
             });
-            expect(createUserMock.mock.calls).toEqual([[{ username: '__USERNAME__' }]]);
+            expect(createUserMock.mock.calls).toEqual([[{ username: '__USERNAME__', email: 'email@email.com' }]]);
         });
     });
 
@@ -152,14 +152,16 @@ describe('/users', () => {
 
             const { status, body } = await request(app)
                 .put('/users/__ID__')
-                .send({ username: '__USERNAME__' })
+                .send({ id: '__ID__', username: '__USERNAME__', email: 'email@email.com' })
                 .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 200,
                 body: { id: '__ID__', username: '__USERNAME__', email: 'email@email.com' },
             });
-            expect(updateUserMock.mock.calls).toEqual([['__ID__', { id: '__ID__', username: '__USERNAME__' }]]);
+            expect(updateUserMock.mock.calls).toEqual([
+                ['__ID__', { id: '__ID__', username: '__USERNAME__', email: 'email@email.com' }],
+            ]);
         });
 
         it('should return a 404 error if the user is not found', async () => {
@@ -167,14 +169,16 @@ describe('/users', () => {
 
             const { status, body } = await request(app)
                 .put('/users/__ID__')
-                .send({ username: '__USERNAME__' })
+                .send({ id: '__ID__', username: '__USERNAME__', email: 'email@email.com' })
                 .set('Authorization', 'Bearer __TOKEN__');
 
             expect({ status, body }).toEqual({
                 status: 404,
                 body: { message: 'user not found' },
             });
-            expect(updateUserMock.mock.calls).toEqual([['__ID__', { id: '__ID__', username: '__USERNAME__' }]]);
+            expect(updateUserMock.mock.calls).toEqual([
+                ['__ID__', { id: '__ID__', username: '__USERNAME__', email: 'email@email.com' }],
+            ]);
         });
     });
 

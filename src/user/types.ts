@@ -1,5 +1,11 @@
+
 interface IUser {
     id: string;
+    username: string;
+    email: string;
+}
+
+interface ICreateUser {
     username: string;
     email: string;
 }
@@ -27,4 +33,4 @@ const users: IUser[] = [
     },
 ];
 
-export { IUser, users };
+export { IUser, users, ICreateUser };
