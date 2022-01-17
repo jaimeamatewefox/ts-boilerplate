@@ -1,6 +1,7 @@
 import request from 'supertest';
 import app from '../../src/app';
 import * as usersRepo from '../../src/user/usersRepo';
+import * as userModel from '../../src/models/user.models';
 
 describe('/users', () => {
     afterEach(() => {
@@ -9,18 +10,10 @@ describe('/users', () => {
 
     describe('GET /users', () => {
         it('should retrieve the list of users', async () => {
-            const getUsersMock = jest.spyOn(usersRepo, 'getUsers').mockReturnValue([
-                {
-                    id: '1',
-                    username: 'JaimeAmate',
-                    email: 'jaime@jaime.com',
-                },
-                {
-                    id: '2',
-                    username: 'RosaBerned',
-                    email: 'rosa@rosa.com',
-                },
-            ]);
+            const getUsersMock = jest.spyOn(usersRepo, 'getUsers').mockResolvedValue({
+                    username: { 'JaimeAmate' },
+                    email: { 'jaime@jaime.com' }
+             });
 
             const { status, body } = await request(app).get('/users').set('Authorization', 'Bearer __TOKEN__');
 
@@ -28,12 +21,10 @@ describe('/users', () => {
                 status: 200,
                 body: [
                     {
-                        id: '1',
                         username: 'JaimeAmate',
                         email: 'jaime@jaime.com',
                     },
                     {
-                        id: '2',
                         username: 'RosaBerned',
                         email: 'rosa@rosa.com',
                     },

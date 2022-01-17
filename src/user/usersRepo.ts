@@ -1,54 +1,29 @@
-import { v4 as uuidv4 } from 'uuid';
-import { IUser, users } from './types';
+import mongoose from 'mongoose';
+import userModel, { IUserDocument } from '../models/user.models';
+import { IUser } from './types';
 
-function getUsers(): IUser[] {
-    return users;
+async function getUsers(): Promise<IUserDocument[]> {
+    return userModel.find();
 }
 
-function getUserById(id: string): IUser | void {
-    const foundUser = users.find(user => user.id === id);
-
-    return foundUser;
+async function getUserById(id: string): Promise<IUserDocument | null> {
+    return userModel.findById(id);
 }
 
-function getUserByUsername(username: string): IUser | void {
-    return users.find(user => user.username === username);
+async function getUserByUsername(username: string): Promise<IUserDocument | null> {
+    return userModel.findOne({ username });
 }
 
-function createUser(user: { username: string }): IUser {
-    const newUser = {
-        id: uuidv4(),
-        username: user.username,
-        email: user.username,
-    };
-
-    users.push(newUser);
-
-    return newUser;
+async function createUser(user: { username: string; email: string }): Promise<IUserDocument> {
+    return userModel.create(user);
 }
 
-function updateUser(userId: string, newUser: IUser): IUser | void {
-    const userIndex = users.findIndex(user => user.id === userId);
-
-    if (userIndex === -1) {
-        return undefined;
-    }
-
-    users[userIndex] = newUser;
-
-    return newUser;
+async function updateUser(id: string, newUser: IUser): Promise<IUserDocument | null> {
+    return userModel.findByIdAndUpdate(id, newUser, { new: true });
 }
 
-function deleteUser(userId: string): boolean {
-    const userIndex = users.findIndex(user => user.id === userId);
-
-    if (userIndex === -1) {
-        return false;
-    }
-
-    users.splice(userIndex, 1);
-
-    return true;
+async function deleteUser(id: string): Promise<IUserDocument | null> {
+    return userModel.findByIdAndDelete(id);
 }
 
 export { getUsers, getUserById, getUserByUsername, createUser, updateUser, deleteUser };

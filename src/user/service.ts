@@ -1,8 +1,8 @@
-import { IUser, users } from './types';
-import * as usersRepo from './usersRepo';
-import { ICreateUser } from './types';
+import { IUserDocument } from './../models/user.models';
+import { IUser } from './types';
+import * as usersRepo from '../user/usersRepo';
 
-function getUsers(username: string): IUser[] | IUser | void {
+async function getUsers(username: string): Promise<IUserDocument[] | IUser | null> {
     if (!username) {
         return usersRepo.getUsers();
     }
@@ -10,34 +10,33 @@ function getUsers(username: string): IUser[] | IUser | void {
     return usersRepo.getUserByUsername(username);
 }
 
-function createUser(user: ICreateUser) {
+async function createUser(user: { username: string; email: string }): Promise<IUserDocument[] | IUser | null> {
     return usersRepo.createUser(user);
 }
 
-function getUserById(id: string): IUser[] | IUser | void {
+async function getUserById(id: string): Promise<IUserDocument[] | IUser | null> {
     if (!id) {
-        return undefined;
+        return null;
     }
 
     return usersRepo.getUserById(id);
 }
 
-function updateUser(userId: string, newUser: IUser): IUser | void {
-        const user = userId;
-        if (!user) {
-            return undefined;
-        }
-        return usersRepo.updateUser(user, newUser);
+async function updateUser(id: string, newUser: IUser): Promise<IUserDocument[] | IUser | null> {
+    if (!id) {
+        return null;
+    }
+    return usersRepo.updateUser(id, newUser);
 }
 
-function deleteUser(userId: string): boolean {
-    const userIndex = usersRepo.getUserById(userId);
+async function deleteUser(id: string): Promise<IUserDocument | IUser | null> {
+    const userIdIsFound = usersRepo.getUserById(id);
 
-    if (userIndex) {
-        return false;
+    if (!userIdIsFound) {
+        return null;
     }
 
-    return usersRepo.deleteUser(userId);
+    return usersRepo.deleteUser(id);
 }
 
 export { getUsers, createUser, getUserById, updateUser, deleteUser };
