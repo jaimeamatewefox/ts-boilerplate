@@ -5,18 +5,11 @@ import { validateSchema } from '../middlewares';
 
 const router = Router();
 
-
 //ENDPOINTS
 
 // list of users
-router.get('/', (req, res) => {
-    const username = req.query.username as string;
-
-    const users = usersService.getUsers(username);
-
-    if (users === undefined) {
-        return res.status(404).send({ message: 'user not found' });
-    }
+router.get('/', async (req, res) => {
+    const users = await usersService.getUsers();
 
     return res.send(users);
 });
@@ -47,33 +40,29 @@ router.put('/:id', validateSchema, (req, res) => {
         return res.status(404).send({ message: 'user not found' });
     }
 
-    return res.send(user); 
+    return res.send(user);
 });
 
-
-//Movies
-
-
 // Create an user
-router.post('/', validateSchema, (req: Request, res: Response) => {
+router.post('/', validateSchema, async (req: Request, res: Response) => {
     const user = {
         username: req.body.username,
         email: req.body.email,
     };
 
-    const newUser = usersService.createUser(user);
+    const newUser = await usersService.createUser(user);
 
     return res.send(newUser);
 });
 
-router.delete('/:id', (req, res) => {
-    const userDeleted = usersService.deleteUser(req.params.id);
+router.delete('/:id', async (req, res) => {
+    const userDeleted = await usersService.deleteUser(req.params.id);
 
     if (!userDeleted) {
         return res.status(404).send({ message: 'user not found' });
     }
 
-    return res.status(204).send();
+    return res.status(200).send(userDeleted);
 });
 
 export { router as userRouter };

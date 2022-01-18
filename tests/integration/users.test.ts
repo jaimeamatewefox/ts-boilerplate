@@ -33,21 +33,6 @@ describe('/users', () => {
             expect(getUsersMock.mock.calls).toEqual([[]]);
         });
 
-        it('should return a user by username', async () => {
-            const getUserByUsernameMock = jest
-                .spyOn(usersRepo, 'getUserByUsername')
-                .mockReturnValue({ id: '__ID__', username: '__USERNAME__', email: 'email@email.com' });
-
-            const { status, body } = await request(app)
-                .get('/users?username=__USERNAME__')
-                .set('Authorization', 'Bearer __TOKEN__');
-
-            expect({ status, body }).toEqual({
-                status: 200,
-                body: { id: '__ID__', username: '__USERNAME__', email: 'email@email.com' },
-            });
-            expect(getUserByUsernameMock.mock.calls).toEqual([['__USERNAME__']]);
-        });
 
         it('should return a 404 status error if the username is not found', async () => {
             const getUserByUsernameMock = jest.spyOn(usersRepo, 'getUserByUsername').mockReturnValue(undefined);
