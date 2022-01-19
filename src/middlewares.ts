@@ -12,7 +12,6 @@ export function isAuth(req: Request, res: Response, next: NextFunction) {
 
 export async function validateSchema(req: Request, res: Response, next: NextFunction) {
     const schema = Joi.object({
-        id: Joi.string(),
         username: Joi.string().min(3).max(25).required(),
         email: Joi.string().min(3).max(25).required(),
     });

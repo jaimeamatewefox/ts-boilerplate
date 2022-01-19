@@ -19,9 +19,6 @@ async function getUserById(id: string): Promise<IUserDocument | null> {
 }
 
 async function updateUser(id: string, newUser: IUser): Promise<IUserDocument | null> {
-    if (!id) {
-        return null;
-    }
     return usersRepo.updateUser(id, newUser);
 }
 
