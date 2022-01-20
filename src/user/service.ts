@@ -1,4 +1,4 @@
-import { IUserDocument } from './../models/user.models';
+import { IUserDocument } from '../models/user.models';
 import { IUser } from './types';
 import * as usersRepo from '../user/usersRepo';
 

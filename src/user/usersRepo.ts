@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import userModel, { IUserDocument } from '../models/user.models';
 import { IUser } from './types';
 

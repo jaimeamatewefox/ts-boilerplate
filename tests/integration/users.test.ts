@@ -1,7 +1,9 @@
+import { Types } from 'mongoose';
 import request from 'supertest';
 import app from '../../src/app';
 import * as usersRepo from '../../src/user/usersRepo';
-import { Types } from 'mongoose';
+
+jest.mock('../../src/helpers/db.ts');
 
 describe('/users', () => {
     afterEach(() => {
@@ -72,7 +74,7 @@ describe('/users', () => {
         });
     });
 
-    describe('POST /users', () => {/////
+    describe('POST /users', () => {
         it('should return a 400 error if the body is ill-formatted', async () => {
             const { status, body } = await request(app)
                 .post('/users/')
@@ -147,9 +149,13 @@ describe('/users', () => {
 
             expect({ status, body }).toEqual({
                 status: 404,
-                body: {},
+                body: {
+                    message: 'user not found',
+                },
             });
-            expect(updateUserMock.mock.calls).toEqual([]);
+            expect(updateUserMock.mock.calls).toEqual([
+                ['__ID__', { username: '__USERNAME__', email: 'email@email.com' }],
+            ]);
         });
     });
 

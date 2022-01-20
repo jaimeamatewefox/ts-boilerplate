@@ -1,6 +1,6 @@
-import userModel, { IUserDocument } from '../../src/models/user.models';
+import { Types } from 'mongoose';
+import userModel from '../../src/models/user.models';
 import * as usersRepo from '../../src/user/usersRepo';
-import { isValidObjectId, Types } from 'mongoose';
 
 describe('user#usersRepo', () => {
     afterEach(() => {
