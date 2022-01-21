@@ -18,13 +18,22 @@ router.get('/', async (req, res) => {
 // Get users by id
 router.get('/:id', async (req, res) => {
     const userId = req.params.id;
-    const user = await usersService.getUserById(userId);
 
-    if (!user) {
-        return res.status(404).send({ message: 'user not found' });
+    try {
+        const user = await usersService.getUserById(userId);
+        res.send(user);
+    } catch (error) {
+        switch (error.message) {
+            case 'user not found':
+                res.status(404).send({ message: error.message });
+                break;
+            case 'invalid id':
+                res.status(400).send({ message: error.message });
+                break;
+            default:
+                res.sendStatus(500);
+        }
     }
-
-    return res.send(user);
 });
 
 // Update an user

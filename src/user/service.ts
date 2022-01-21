@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose';
 import { IUserDocument } from '../models/user.models';
 import { IUser } from './types';
 import * as usersRepo from '../user/usersRepo';
@@ -10,12 +11,18 @@ async function createUser(user: { username: string; email: string }): Promise<IU
     return usersRepo.createUser(user);
 }
 
-async function getUserById(id: string): Promise<IUserDocument | null> {
-    if (!id) {
-        return null;
+async function getUserById(id: string): Promise<IUserDocument> {
+    if (!isValidObjectId(id)) {
+        throw new Error('invalid id');
     }
 
-    return usersRepo.getUserById(id);
+    const user = await usersRepo.getUserById(id);
+
+    if (!user) {
+        throw new Error('user not found');
+    }
+
+    return user;
 }
 
 async function updateUser(id: string, newUser: IUser): Promise<IUserDocument | null> {
