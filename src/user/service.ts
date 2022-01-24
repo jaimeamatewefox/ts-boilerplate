@@ -26,11 +26,30 @@ async function getUserById(id: string): Promise<IUserDocument> {
 }
 
 async function updateUser(id: string, newUser: IUser): Promise<IUserDocument | null> {
-    return usersRepo.updateUser(id, newUser);
+    if (!isValidObjectId(id)) {
+        throw new Error('id is not valid');
+    }
+    const user = await usersRepo.updateUser(id, newUser);
+
+    if (!user) {
+        throw new Error('user not found');
+    }
+
+    return user;
 }
 
-async function deleteUser(id: string): Promise<IUserDocument | null> {
-    return usersRepo.deleteUser(id);
+async function deleteUser(id: string): Promise<IUserDocument> {
+    if (!isValidObjectId(id)) {
+        throw new Error('id is not valid');
+    }
+
+    const user = await usersRepo.deleteUser(id);
+
+    if (!user) {
+        throw new Error('user not found');
+    }
+
+    return user;
 }
 
 export { getUsers, createUser, getUserById, updateUser, deleteUser };

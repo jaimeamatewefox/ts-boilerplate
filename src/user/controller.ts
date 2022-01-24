@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import * as usersService from './service';
-//import * as usersRepo from './usersRepo';
 import { validateSchema } from '../middlewares';
 import { IUser } from './types';
 
@@ -43,13 +42,23 @@ router.put('/:id', validateSchema, async (req, res) => {
         email: req.body.email,
     };
 
-    const user = await usersService.updateUser(req.params.id, newUser);
-
-    if (!user) {
-        return res.status(404).send({ message: 'user not found' });
+    try {
+        const user = await usersService.updateUser(req.params.id, newUser);
+        return res.send(user);
+    } catch (error) {
+        switch (error.message) {
+            case 'id is not valid':
+                res.status(400).send({ message: 'id is not valid' });
+                break;
+            case 'user not found':
+                res.status(404).send({ message: 'user not found' });
+                break;
+            default:
+                res.sendStatus(500);
+        }
     }
 
-    return res.send(user);
+    return newUser;
 });
 
 // Create an user
@@ -64,14 +73,23 @@ router.post('/', validateSchema, async (req: Request, res: Response) => {
     return res.send(newUser);
 });
 
+// Delete an user
 router.delete('/:id', async (req, res) => {
-    const userDeleted = await usersService.deleteUser(req.params.id);
-
-    if (!userDeleted) {
-        return res.status(404).send({ message: 'user not found' });
+    try {
+        const userDeleted = await usersService.deleteUser(req.params.id);
+        return res.status(200).send(userDeleted);
+    } catch (error) {
+        switch (error.message) {
+            case 'id is not valid':
+                res.status(400).send({ message: 'id is not valid' });
+                break;
+            case 'user not found':
+                res.status(404).send({ message: 'user not found' });
+                break;
+            default:
+                res.sendStatus(500);
+        }
     }
-
-    return res.status(200).send(userDeleted);
 });
 
 export { router as userRouter };

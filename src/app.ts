@@ -9,7 +9,7 @@ const app = express();
 // Express configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(isAuth);
+//app.use(isAuth);
 app.use('/users', userRouter);
 app.use('/quotes', quoteRouter);
 
