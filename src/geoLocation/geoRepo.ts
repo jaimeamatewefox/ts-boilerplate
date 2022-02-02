@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as locationModel from '../models/location.models';
 import { IAddress, IGeo, INominatinApiResponse } from './types';
 
 async function getLocations(query: IAddress): Promise<INominatinApiResponse[]> {

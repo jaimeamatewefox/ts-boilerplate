@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validateObject } from '../middlewares';
+import { validateObject } from '../middlewares/validateObject';
 import * as locationService from './service';
 import { IAddress } from './types';
 
@@ -27,6 +27,10 @@ router.get('/', validateObject, async (req, res) => {
                 res.sendStatus(500);
         }
     }
+});
+
+router.post('/login', async (req, res) => {
+    res.send('HELLO');
 });
 
 export { router as locationRouter };
