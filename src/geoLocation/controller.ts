@@ -1,11 +1,12 @@
 import { Router } from 'express';
+import { verifyToken } from '../middlewares/auth';
 import { validateObject } from '../middlewares/validateObject';
 import * as locationService from './service';
 import { IAddress } from './types';
 
 const router = Router();
 
-router.get('/', validateObject, async (req, res) => {
+router.get('/', verifyToken, validateObject, async (req, res) => {
     try {
         const queryObject: IAddress = {
             street: req.query.street as string,
@@ -27,10 +28,6 @@ router.get('/', validateObject, async (req, res) => {
                 res.sendStatus(500);
         }
     }
-});
-
-router.post('/login', async (req, res) => {
-    res.send('HELLO');
 });
 
 export { router as locationRouter };
