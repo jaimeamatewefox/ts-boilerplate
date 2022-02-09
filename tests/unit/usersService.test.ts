@@ -11,35 +11,34 @@ describe('user#service', () => {
 
     describe('createUser', () => {
         it('should create a new user', async () => {
-            const getUserByEmailMock = jest.spyOn(usersRepo, 'getUserByEmail').mockResolvedValue({
+            const getUserByEmailMock = jest.spyOn(usersRepo, 'getUserByEmail').mockResolvedValue(null);
+
+            const hashMock = jest.spyOn(bcrypt, 'hash').mockResolvedValue('__ENCRIPTEDPASSWORD__' as never);
+
+            const createUserMock = jest.spyOn(usersRepo, 'createUser').mockResolvedValue({
+                _id: new Types.ObjectId('000000000000000000000000'),
+                password: '__ENCRIPTEDPASSWORD__',
                 email: '__EMAIL__',
             } as never);
 
-            const hashMock = jest.spyOn(bcrypt, 'hash').mockResolvedValue({
-                password: '__PASSWORD__',
-                number: 10,
-            } as never);
-
-            const createUserlMock = jest.spyOn(usersRepo, 'createUser').mockResolvedValue({
-                password: '__PASSWORD__',
-                email: '__EMAIL__',
-                token: '__TOKEN__',
-            } as never);
-
-            const ret = await usersRepo.createUser({
+            const ret = await usersService.createUser({
                 email: '__EMAIL__',
                 password: '__PASSWORD__',
-                token: '__TOKEN__',
             });
 
-            expect(getUserByEmailMock.mock.calls).toEqual([]);
-            expect(hashMock.mock.calls).toEqual([]);
-            expect(createUserlMock.mock.calls).toEqual([
+            expect(ret).toEqual({
+                _id: new Types.ObjectId('000000000000000000000000'),
+                password: '__ENCRIPTEDPASSWORD__',
+                email: '__EMAIL__',
+            });
+
+            expect(getUserByEmailMock.mock.calls).toEqual([['__EMAIL__']]);
+            expect(hashMock.mock.calls).toEqual([['__PASSWORD__', 10]]);
+            expect(createUserMock.mock.calls).toEqual([
                 [
                     {
-                        password: '__PASSWORD__',
+                        password: '__ENCRIPTEDPASSWORD__',
                         email: '__EMAIL__',
-                        token: '__TOKEN__',
                     },
                 ],
             ]);
@@ -49,19 +48,15 @@ describe('user#service', () => {
     describe('loginUser', () => {
         it('should send an access token if the password is correct', async () => {
             const getUserByEmailMock = jest.spyOn(usersRepo, 'getUserByEmail').mockResolvedValue({
+                _id: new Types.ObjectId('000000000000000000000000'),
+                password: '__ENCRIPTEDPASSWORD__',
                 email: '__EMAIL__',
             } as never);
-            const compareMock = jest.spyOn(bcrypt, 'compare').mockResolvedValue({
-                userPassword: '__PASSWORD__',
-                foundUserPassword: '__PASSWORD__',
-            } as never);
-            const signMock = jest.spyOn(jwt, 'sign').mockReturnValue({
-                id: '__ID__',
-                email: '__EMAIL__',
-            } as never);
+            const compareMock = jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
+            const signMock = jest.spyOn(jwt, 'sign').mockReturnValue('__TOKEN__' as never);
             const saveUserTokenMock = jest.spyOn(usersRepo, 'saveUserToken').mockResolvedValue({
-                id: new Types.ObjectId('000000000000000000000000'),
-                password: '__PASSWORD__',
+                _id: new Types.ObjectId('000000000000000000000000'),
+                password: '__ENCRIPTEDPASSWORD__',
                 email: '__EMAIL__',
                 token: '__TOKEN__',
             } as never);
@@ -69,21 +64,17 @@ describe('user#service', () => {
             const ret = await usersService.loginUser({
                 email: '__EMAIL__',
                 password: '__PASSWORD__',
-                token: '__TOKEN__',
             });
 
             expect(ret).toEqual({
-                token: {
-                    id: '__ID__',
-                    email: '__EMAIL__',
-                },
+                token: '__TOKEN__',
             });
 
             expect(getUserByEmailMock.mock.calls).toEqual([['__EMAIL__']]);
-            expect(compareMock.mock.calls).toEqual([['__PASSWORD__', undefined]]);
+            expect(compareMock.mock.calls).toEqual([['__PASSWORD__', '__ENCRIPTEDPASSWORD__']]);
             expect(signMock.mock.calls).toEqual([
                 [
-                    { email: '__EMAIL__', id: undefined },
+                    { email: '__EMAIL__', id: new Types.ObjectId('000000000000000000000000') },
                     'tokenKey',
                     {
                         expiresIn: '10h',
@@ -91,13 +82,7 @@ describe('user#service', () => {
                 ],
             ]);
             expect(saveUserTokenMock.mock.calls).toEqual([
-                [
-                    undefined,
-                    {
-                        id: '__ID__',
-                        email: '__EMAIL__',
-                    },
-                ],
+                [new Types.ObjectId('000000000000000000000000'), '__TOKEN__'],
             ]);
         });
     });

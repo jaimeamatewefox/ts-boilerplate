@@ -1,7 +1,6 @@
 import * as geoRepo from '../../src/geoLocation/geoRepo';
 import request from 'supertest';
 import app from '../../src/app';
-import { send } from 'process';
 
 describe('/location', () => {
     afterEach(() => {

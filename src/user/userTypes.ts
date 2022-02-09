@@ -5,7 +5,7 @@ interface IUser {
 }
 
 interface IAuthenticate {
-    token: String;
+    token: string;
 }
 
 export { IUser, IAuthenticate };

@@ -30,9 +30,9 @@ async function loginUser(user: IUser): Promise<IAuthenticate | null> {
         throw Error('User not found');
     }
 
-    const passwordCorrect = await bcrypt.compare(user.password, foundUser.password);
+    const isPasswordCorrect = await bcrypt.compare(user.password, foundUser.password);
 
-    if (!passwordCorrect) {
+    if (!isPasswordCorrect) {
         throw Error('invalid password');
     }
 
