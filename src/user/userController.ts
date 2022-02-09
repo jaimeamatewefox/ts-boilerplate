@@ -16,7 +16,7 @@ router.post('/login', async (req, res) => {
     } catch (error: any) {
         switch (error.message) {
             case 'Invalid password':
-                res.status(400).send({ message: 'id is not valid' });
+                res.status(400).send({ message: 'Invalid password' });
                 break;
             default:
                 res.sendStatus(500);
