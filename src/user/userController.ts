@@ -15,6 +15,9 @@ router.post('/login', async (req, res) => {
         return res.send(token);
     } catch (error: any) {
         switch (error.message) {
+            case 'User not found':
+                res.status(404).send({ message: 'User not found' });
+                break;
             case 'Invalid password':
                 res.status(400).send({ message: 'Invalid password' });
                 break;

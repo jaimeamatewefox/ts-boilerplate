@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose';
 import userModel, { IUserDocument } from '../models/user.models';
 import { IUser } from '../user/userTypes';
 
@@ -15,7 +16,7 @@ async function getUserByEmail(email: string): Promise<IUserDocument | null> {
 
 //This fuction stores the user token
 
-async function saveUserToken(userId: string, token: string): Promise<IUserDocument | null> {
+async function saveUserToken(userId: ObjectId, token: string): Promise<IUserDocument | null> {
     return userModel.findByIdAndUpdate(userId, { token });
 }
 
