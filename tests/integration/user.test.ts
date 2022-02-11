@@ -4,7 +4,6 @@ import app from '../../src/app';
 import { Types } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { clear } from 'console';
 
 jest.mock('../../src/helpers/db.ts');
 
