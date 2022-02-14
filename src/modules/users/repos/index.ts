@@ -1,1 +1,1 @@
-export * from './mongoUsersRepo';
+export * from './user.mongo-repo';

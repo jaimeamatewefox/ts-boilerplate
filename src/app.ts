@@ -1,6 +1,6 @@
 import express from 'express';
 import { locationRouter } from './geoLocation/controller';
-import { userRouter } from './user/userController';
+import { userRouter } from './modules/users/infrastructure/http/users.routes';
 
 // Create Express server
 const app = express();

@@ -1,7 +1,7 @@
-import { IUsersRepo } from '../../repos/usersRepo';
-import { IUser } from '../../domain/user';
+import { IUsersRepo } from '../../repos/user.repo';
+import { IUser } from '../../domain/user.entity';
 
-interface IGetUsersUseCase {
+export interface IGetUsersUseCase {
     execute(): Promise<IUser[]>
 }
 
