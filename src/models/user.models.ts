@@ -1,4 +1,3 @@
-import { required, string } from 'joi';
 import { Schema, Document, model } from 'mongoose';
 import { IUser } from '../user/userTypes';
 
