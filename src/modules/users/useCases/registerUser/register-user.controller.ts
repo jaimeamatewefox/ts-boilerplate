@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { IRegisterUserUseCase } from './register-user.use-case';
 import { IRegisterUserDTO } from '../../dto';
+import { RegisterUserErrors } from './register-user.errors';
 
 class RegisterUserController {
     private registerUserUseCase: IRegisterUserUseCase;
@@ -15,9 +16,18 @@ class RegisterUserController {
             password: req.body.password as string,
         };
 
-        const useCaseResponse = await this.registerUserUseCase.execute(newUser);
-
-        res.send(useCaseResponse);
+        try {
+            const useCaseResponse = await this.registerUserUseCase.execute(newUser);
+            res.send(useCaseResponse);
+        } catch (error: any) {
+            switch (error.constructor) {
+                case RegisterUserErrors.UserAlreadyRegistered:
+                    res.status(409).send({ message: error.message });
+                    break;
+                default:
+                    res.sendStatus(500);
+            }
+        }
     }
 }
 
