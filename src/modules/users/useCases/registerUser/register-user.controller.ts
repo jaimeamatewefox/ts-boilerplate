@@ -3,7 +3,7 @@ import { IRegisterUserUseCase } from './register-user.use-case';
 import { IRegisterUserDTO } from '../../dto';
 import { RegisterUserErrors } from './register-user.errors';
 
-class RegisterUserController {
+export class RegisterUserController {
     private registerUserUseCase: IRegisterUserUseCase;
 
     constructor(registerUserUseCase: IRegisterUserUseCase) {
@@ -30,5 +30,3 @@ class RegisterUserController {
         }
     }
 }
-
-export default RegisterUserController;

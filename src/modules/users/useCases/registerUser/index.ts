@@ -1,5 +1,5 @@
 import { MongoUserRepo } from '../../repos';
-import RegisterUserController from './register-user.controller';
+import { RegisterUserController } from './register-user.controller';
 import RegisterUserUseCase from './register-user.use-case';
 
 const repo = new MongoUserRepo();

@@ -12,8 +12,12 @@ class MongoUserRepo implements IUsersRepo {
         return userModel.findOne({ email });
     }
 
-    public async createUser(newUser: IRegisterUserDTO): Promise<IUser> {
+    public async createUser(newUser: IRegisterUserDTO): Promise<IUserDO> {
         return userModel.create(newUser);
+    }
+
+    public async saveUserToken(id: string, token: string): Promise<IUserDO | null> {
+        return userModel.findByIdAndUpdate(id, { token });
     }
 }
 

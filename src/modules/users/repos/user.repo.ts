@@ -1,10 +1,12 @@
+import { IUserDO } from './../dao/do/user.do';
 import { IUser } from '../domain';
 import { IRegisterUserDTO } from '../dto';
 
 interface IUsersRepo {
-    getAllUsers(): Promise<IUser[]>;
-    getUserByEmail(email: string): Promise<IUser | null>;
-    createUser(newUser: IRegisterUserDTO): Promise<IUser>;
+    getAllUsers(): Promise<IUserDO[]>;
+    getUserByEmail(email: string): Promise<IUserDO | null>;
+    createUser(newUser: IRegisterUserDTO): Promise<IUserDO>;
+    saveUserToken(id: string, token: string): Promise<IUserDO | null>;
 }
 
 export { IUsersRepo };
