@@ -1,6 +1,6 @@
-import { ILoginUserDTO } from './../../dto/login-user.dto';
-import { ILoginUserUseCase } from './login-user.use-case';
 import { Request, Response } from 'express';
+import { ILoginUserDTO } from "../../dto/login-user.dto";
+import { ILoginUserUseCase } from './login-user.use-case';
 import { LoginUserErrors } from './login-user.errors';
 
 export class LoginUserController {

@@ -1,4 +1,4 @@
-import { IAddress, IGeo, INominatinApiResponse } from './types';
+import { IAddress, IGeo } from './types';
 import * as geoRepo from './geoRepo';
 
 export async function getLocationCoordinates(query: IAddress): Promise<IGeo> {

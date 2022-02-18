@@ -5,7 +5,7 @@ import config from '../config';
 // Authorization: Bearer <token>
 
 function verifyToken(req: Request, res: Response, next: NextFunction) {
-    const bearerToken = req.headers['authorization'];
+    const bearerToken = req.headers.authorization;
 
     if (!bearerToken) {
         return res.status(401).send({ msg: 'Token required for authoritation' });

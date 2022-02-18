@@ -6,7 +6,7 @@ interface IAddress {
     postalCode: string;
     country: string;
 }
-//return value required
+// return value required
 interface IGeo {
     latitude: string;
     longitude: string;
@@ -25,16 +25,6 @@ interface INominatinApiResponse {
     class: string;
     type: string;
     importance: number;
-
-
-    // carpeta en src con user
-// controlller, service, repo
-// crear db para los user
-// user en db ya creado
-
-//userModel
-
-// authentication aquí no!!!
 }
 
 export { IAddress, IGeo, INominatinApiResponse };

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { any } from 'joi';
 import { verifyToken } from '../middlewares/auth';
 import { validateObject } from '../middlewares/validateObject';
 import * as locationService from './service';
@@ -19,7 +20,7 @@ router.get('/', verifyToken, validateObject, async (req, res) => {
         const response = await locationService.getLocationCoordinates(queryObject);
 
         res.send(response);
-    } catch (error) {
+    } catch (error: any) {
         switch (error.message) {
             case 'Location not found':
                 res.status(404).send({ message: 'Location not found' });

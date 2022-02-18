@@ -1,6 +1,5 @@
 import { IUsersRepo } from './user.repo';
 import userModel, { IUserDO } from '../dao/do/user.do';
-import { IUser } from '../domain';
 import { IRegisterUserDTO } from '../dto';
 
 class MongoUserRepo implements IUsersRepo {

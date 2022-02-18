@@ -1,5 +1,4 @@
-import { IUserDO } from './../dao/do/user.do';
-import { IUser } from '../domain';
+import { IUserDO } from "../dao/do/user.do";
 import { IRegisterUserDTO } from '../dto';
 
 interface IUsersRepo {

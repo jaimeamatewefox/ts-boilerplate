@@ -13,7 +13,7 @@ async function getUserByEmail(email: string): Promise<IUserDocument | null> {
     return userModel.findOne({ email });
 }
 
-//This fuction stores the user token
+// This fuction stores the user token
 
 async function saveUserToken(userId: string, token: string): Promise<IUserDocument | null> {
     return userModel.findByIdAndUpdate(userId, { token });
