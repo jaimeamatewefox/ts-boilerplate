@@ -1,5 +1,7 @@
+import { GetLocationCoordinatesController } from './../../get-location-controller';
 import { GetLocationCoordinatesUseCase } from './../../get-location-coordinates.use-case';
 import { NominatinGeoLocationRepo } from '../../../../repos';
+import { GetLocationCoordinatesErrors } from '../../get-location-coordinates.errors';
 
 describe('#modules#geoLocation#GetLocationCoordinatesUseCase', () => {
     afterEach(() => {
@@ -7,7 +9,7 @@ describe('#modules#geoLocation#GetLocationCoordinatesUseCase', () => {
     });
 
     describe('#execute', () => {
-        it('should return null if there are not locations', async () => {
+        it('should throw the error LocationCoordinatesNotFound if there are not locations', async () => {
             const repo = new NominatinGeoLocationRepo();
             const getLocationCoordinatesMock = jest.spyOn(repo, 'getLocationCoordinates').mockResolvedValue(null);
 
@@ -20,8 +22,10 @@ describe('#modules#geoLocation#GetLocationCoordinatesUseCase', () => {
                 country: '__COUNTRY__',
             };
 
-            const response = await useCase.execute(query);
-            expect(response).toBeNull();
+            await expect(() => useCase.execute(query)).rejects.toThrow(
+                GetLocationCoordinatesErrors.LocationCoordinatesNotFound,
+            );
+
             expect(getLocationCoordinatesMock.mock.calls).toEqual([
                 [
                     {

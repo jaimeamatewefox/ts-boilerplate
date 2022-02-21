@@ -1,4 +1,4 @@
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import { IGetLocationCoordinatesUseCase } from './get-location-coordinates.use-case';
 import { IGetLocationDTO } from '../../dto';
 import { GetLocationCoordinatesErrors } from './get-location-coordinates.errors';
@@ -24,11 +24,8 @@ export class GetLocationCoordinatesController {
             res.send(getLocationCoordinatesResponse);
         } catch (error: any) {
             switch (error.constructor) {
-                case new GetLocationCoordinatesErrors.LocationCoordinatesNotFound():
+                case GetLocationCoordinatesErrors.LocationCoordinatesNotFound:
                     res.status(404).send({ message: error.message });
-                    break;
-                case new GetLocationCoordinatesErrors.LocationInvalidFormat():
-                    res.status(403).send({ message: error.message });
                     break;
                 default:
                     res.sendStatus(500);

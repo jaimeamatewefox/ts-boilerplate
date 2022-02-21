@@ -4,10 +4,4 @@ export namespace GetLocationCoordinatesErrors {
             super('Location not found');
         }
     }
-
-    export class LocationInvalidFormat extends Error {
-        constructor() {
-            super('Invalid format');
-        }
-    }
 }
