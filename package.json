@@ -12,7 +12,7 @@
     "eslint:fix": "eslint --fix --ext .ts --config .eslintrc.json src && eslint --fix --ext .ts --config .eslintrc.json",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
-    "test": "jest"
+    "test": "jest --collectCoverage"
   },
   "keywords": [],
   "author": "",
