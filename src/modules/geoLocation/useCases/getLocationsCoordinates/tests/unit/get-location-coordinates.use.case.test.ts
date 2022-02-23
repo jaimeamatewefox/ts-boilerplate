@@ -1,4 +1,3 @@
-import { GetLocationCoordinatesController } from './../../get-location-controller';
 import { GetLocationCoordinatesUseCase } from './../../get-location-coordinates.use-case';
 import { NominatinGeoLocationRepo } from '../../../../repos';
 import { GetLocationCoordinatesErrors } from '../../get-location-coordinates.errors';
@@ -11,9 +10,10 @@ describe('#modules#geoLocation#GetLocationCoordinatesUseCase', () => {
     describe('#execute', () => {
         it('should throw the error LocationCoordinatesNotFound if there are not locations', async () => {
             const repo = new NominatinGeoLocationRepo();
+            const useCase = new GetLocationCoordinatesUseCase(repo);
+
             const getLocationCoordinatesMock = jest.spyOn(repo, 'getLocationCoordinates').mockResolvedValue(null);
 
-            const useCase = new GetLocationCoordinatesUseCase(repo);
             const query = {
                 street: '__STREET__',
                 streetNumber: '__STREENUMBER__',
@@ -41,11 +41,12 @@ describe('#modules#geoLocation#GetLocationCoordinatesUseCase', () => {
 
         it('should return the latitude an longitude coordinates', async () => {
             const repo = new NominatinGeoLocationRepo();
+            const useCase = new GetLocationCoordinatesUseCase(repo);
+
             const getLocationCoordinatesMock = jest
                 .spyOn(repo, 'getLocationCoordinates')
                 .mockResolvedValue({ latitude: '__LATITUDE__', longitude: '__LONGITUDE__' } as never);
 
-            const useCase = new GetLocationCoordinatesUseCase(repo);
             const query = {
                 street: '__STREET__',
                 streetNumber: '__STREENUMBER__',

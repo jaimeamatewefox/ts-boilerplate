@@ -8,7 +8,7 @@ export interface IRegisterUserUseCase {
     execute(registerParams: IRegisterUserDTO): Promise<IUser>;
 }
 
-class RegisterUserUseCase implements IRegisterUserUseCase {
+export class RegisterUserUseCase implements IRegisterUserUseCase {
     private usersRepo: IUsersRepo;
 
     constructor(usersRepo: IUsersRepo) {
@@ -34,5 +34,3 @@ class RegisterUserUseCase implements IRegisterUserUseCase {
         return this.usersRepo.createUser(newUser);
     }
 }
-
-export default RegisterUserUseCase;
