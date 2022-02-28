@@ -4,7 +4,7 @@ import request from 'supertest';
 import app from '../../../../../../app';
 import bcrypt from 'bcrypt';
 
-describe('/user', () => {
+describe('#modules#users#loginUserUseCase#tests#integration', () => {
     afterEach(() => {
         jest.restoreAllMocks();
     });

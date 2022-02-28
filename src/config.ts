@@ -7,4 +7,6 @@ const config = {
     tokenKey: process.env.TOKEN_KEY || 'tokenKey',
 };
 
+console.log(process.env.TOKEN_KEY);
+
 export default config;

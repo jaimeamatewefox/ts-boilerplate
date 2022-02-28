@@ -20,7 +20,7 @@ export class RegisterUserController {
             const useCaseResponse = await this.registerUserUseCase.execute(newUser);
             res.send(useCaseResponse);
         } catch (error: any) {
-            switch (error.constructor) {
+            switch (error) {
                 case RegisterUserErrors.UserAlreadyRegistered:
                     res.status(409).send({ message: error.message });
                     break;
